@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"server/routes"
+	"server/config"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -18,6 +19,8 @@ import (
 func main() {
 
 	_ = godotenv.Load()
+
+	config.ConnectDB()
 
 	router := gin.Default()
 
