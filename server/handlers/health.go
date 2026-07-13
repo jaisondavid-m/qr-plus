@@ -44,6 +44,6 @@ func HealthCheck(c *gin.Context) {
 		response["database"].(gin.H)["error"] = dbErr
 	}
 
-	c.JSON(http.StatusOK, response)
+	c.JSON(statusCode, response)
 
 }
