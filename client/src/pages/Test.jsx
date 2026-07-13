@@ -11,12 +11,17 @@ function Test() {
         try {
             const res = await API.get("/health")
             setHealth(res.data)
-        } catch(err) {
-            setError(
-                err.response?.data?.message ||
-                err.message ||
-                "Failed to connect to backend"
-            )
+        } catch (err) {
+            const data = err.response?.data
+            if (data?.database) {
+                setHealth(data)
+            } else {
+                setError(
+                    err.response?.data?.message ||
+                    err.message ||
+                    "Failed to connect to backend"
+                )
+            }
         } finally {
             setLoading(false)
         }
@@ -24,7 +29,7 @@ function Test() {
 
     useEffect(() => {
         checkHealth()
-    },[])
+    }, [])
 
     return (
         <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4" >
@@ -39,7 +44,7 @@ function Test() {
                             <p className="text-slate-600" >
                                 Checking Backend...
                             </p>
-                        </div>  
+                        </div>
                     ) : error ? (
                         <div className="rounded-lg border border-red-200 bg-red-50 p-5" >
                             <h2 className="text-xl font-semibold text-gray-600 mb-1" >
@@ -68,11 +73,10 @@ function Test() {
                             <div className="flex items-center justify-between" >
                                 <span className="font-medium text-slate-700" >
                                     Database
-                                </span> 
+                                </span>
                                 <span
-                                    className={`rounded-full px-2 py-1 text-sm font-medium text-white ${
-                                        health.database?.status == "connected" ? "bg-green-600" : "bg-red-500"
-                                    }`}
+                                    className={`rounded-full px-2 py-1 text-sm font-medium text-white ${health.database?.status == "connected" ? "bg-green-600" : "bg-red-500"
+                                        }`}
                                 >
                                     {health.database?.status}
                                 </span>
