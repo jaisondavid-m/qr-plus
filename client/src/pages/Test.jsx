@@ -67,6 +67,25 @@ function Test() {
                             </div>
                             <div className="flex items-center justify-between" >
                                 <span className="font-medium text-slate-700" >
+                                    Database
+                                </span> 
+                                <span
+                                    className={`rounded-full px-2 py-1 text-sm font-medium text-white ${
+                                        health.database?.status == "connected" ? "bg-green-600" : "bg-red-500"
+                                    }`}
+                                >
+                                    {health.database?.status}
+                                </span>
+                            </div>
+                            {
+                                health.database?.error && (
+                                    <p className="text-sm text-red-500" >
+                                        {health.database.error}
+                                    </p>
+                                )
+                            }
+                            <div className="flex items-center justify-between" >
+                                <span className="font-medium text-slate-700" >
                                     HTTP code
                                 </span>
                                 <span className="font-semibold text-green-600" >
