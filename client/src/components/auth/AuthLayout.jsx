@@ -17,7 +17,7 @@ function AuthLayout({
     const status = mode === "register" ? "PENDING · FIRST CODE" : "READY TO SCAN"
 
     return (
-        <div className="min-h-screen w-full auth-void font-body flex" >
+        <div className="h-screen w-full auth-void font-body flex" >
             <aside
                 className="hidden md:flex md:w-[42%] lg:w-[38%] flex-col justify-between border-r border-[#1F2140] px-10 py-10 relative overflow-hidden
                 text-white bg-[#0F172A]"
