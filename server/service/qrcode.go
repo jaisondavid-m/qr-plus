@@ -1,0 +1,71 @@
+package service
+
+import (
+
+	"errors"
+
+	"server/models"
+	"server/repository"
+	"server/utils"
+
+	"github.com/go-sql-driver/mysql"
+
+)
+
+var ErrQRCodeNotFound = errors.New("qr code not found")
+
+func CreatedQRCode(content string, userID int) (*models.QRCode, error) {
+
+	var (
+		code 		string
+		qrCodeID 	int64
+		err 		error
+	)
+
+	for attempts := 0; attempts < 5; attempts++ {
+
+		code, err := utils.GenerateShortCode(8)
+
+		if err != nil {
+			return nil, err
+		}
+
+		qrCodeID, err = repository.CreateQRCode(code, content)
+
+		if err == nil {
+			break
+		}
+
+		if !isDuplicateEntryError(err) {
+			return nil, err
+		}
+
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := repository.CreateQRCodeOwner(qrCodeID, userID); err != nil {
+		return nil, err
+	}
+
+	return &models.QRCode{
+		ID: int(qrCodeID),
+		Code: code,
+		Content: content,
+	}, nil
+
+}
+
+func isDuplicateEntryError(err error) bool {
+
+	var mysqlErr *mysql.MySQLError
+
+	if errors.As(err, &mysqlErr) {
+		return mysqlErr.Number == 1062
+	}
+
+	return false
+
+}

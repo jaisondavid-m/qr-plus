@@ -2,6 +2,7 @@ package routes
 
 import (
 	"server/handlers"
+	"server/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,6 +18,12 @@ func SetUpRoutes(router *gin.Engine) {
 			auth.POST("/register", handlers.Register)
 			auth.POST("/login", handlers.Login)
 		}
+	}
+
+	qr := v1.Group("/qrcodes")
+	qr.Use(middleware.AuthMiddleware())
+	{
+		qr.POST("/", handlers.CreateQRCode)
 	}
 
 }
