@@ -69,3 +69,19 @@ func isDuplicateEntryError(err error) bool {
 	return false
 
 }
+
+func GetQRCodeImage(code string) ([]byte, error) {
+
+	qr, err := repository.GetQRCodeByCode(code)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if qr == nil {
+		return nil, ErrQRCodeNotFound
+	}
+
+	return utils.GenerateQRCodePNG(qr.Content, 256)
+
+}

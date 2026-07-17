@@ -1,7 +1,7 @@
 package handlers
 
 import (
-
+	"errors"
 	"fmt"
 	// "errors"
 	"net/http"
@@ -10,7 +10,6 @@ import (
 	"server/service"
 
 	"github.com/gin-gonic/gin"
-
 )
 
 func CreateQRCode(c *gin.Context)  {
@@ -54,5 +53,33 @@ func CreateQRCode(c *gin.Context)  {
 			"image_url": fmt.Sprintf("/qr/%s/image", qr.Code),
 		},
 	})
+
+}
+
+func GetQRCodeImage(c *gin.Context) {
+
+	code := c.Param("code")
+
+	png, err := service.GetQRCodeImage(code)
+
+	if err != nil {
+
+		if errors.Is(err, service.ErrQRCodeNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{
+				"status": "error",
+				"message": "QR code not found",
+			})
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": "error",
+			"message": "Failed to generate QR code image",
+		})
+		return
+
+	}
+
+	c.Data(http.StatusOK, "image/png", png)
 
 }

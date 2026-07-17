@@ -26,4 +26,6 @@ func SetUpRoutes(router *gin.Engine) {
 		qr.POST("/", handlers.CreateQRCode)
 	}
 
+	router.GET("/qr/:code/image", handlers.GetQRCodeImage)
+
 }

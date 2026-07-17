@@ -45,3 +45,25 @@ func GetQRCodeByCode(code string) (*models.QRCode, error) {
 	return &qr, nil
 
 }
+
+// func GetQRCodeByCode(code string) (*models.QRCode, error) {
+
+// 	var qr models.QRCode
+
+// 	row := config.DB.QueryRow(
+// 		"SELECT id, code, content, created_at, updated_at FROM qr_codes WHERE code = ?",
+// 		code,
+// 	)
+
+// 	err := row.Scan(&qr.ID, &qr.Code, &qr.Content, &qr.CreatedAt, &qr.UpdatedAt)
+
+// 	if err != nil {
+// 		if err == sql.ErrNoRows {
+// 			return nil, nil
+// 		}
+// 		return nil, err
+// 	}
+
+// 	return &qr, nil
+
+// }
