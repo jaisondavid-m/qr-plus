@@ -24,7 +24,7 @@ func CreatedQRCode(content string, userID int) (*models.QRCode, error) {
 
 	for attempts := 0; attempts < 5; attempts++ {
 
-		code, err := utils.GenerateShortCode(8)
+		code, err = utils.GenerateShortCode(8)
 
 		if err != nil {
 			return nil, err
