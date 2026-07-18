@@ -70,7 +70,7 @@ func isDuplicateEntryError(err error) bool {
 
 }
 
-func GetQRCodeImage(code string) ([]byte, error) {
+func GetQRCodeImage(code, ipAddress, userAgent string) ([]byte, error) {
 
 	qr, err := repository.GetQRCodeByCode(code)
 
@@ -82,6 +82,14 @@ func GetQRCodeImage(code string) ([]byte, error) {
 		return nil, ErrQRCodeNotFound
 	}
 
-	return utils.GenerateQRCodePNG(qr.Content, 256)
+	png, err := utils.GenerateQRCodePNG(qr.Content, 256)
+
+	if err != nil {
+		return nil, err
+	}
+
+	go recordScan(qr.ID, ipAddress, userAgent)
+
+	return png, nil
 
 }

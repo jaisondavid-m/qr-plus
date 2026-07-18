@@ -24,6 +24,8 @@ func SetUpRoutes(router *gin.Engine) {
 	qr.Use(middleware.AuthMiddleware())
 	{
 		qr.POST("/", handlers.CreateQRCode)
+		qr.GET("/", handlers.ListQRCodes)
+		qr.GET("/:id", handlers.GetQRCodeDetails)
 	}
 
 	router.GET("/qr/:code/image", handlers.GetQRCodeImage)
