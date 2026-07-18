@@ -28,3 +28,17 @@ CREATE TABLE IF NOT EXISTS qr_codes_owners (
 
     UNIQUE KEY unique_qr_owner (qr_code_id)
 );
+
+CREATE TABLE IF NOT EXISTS qr_code_scans (
+    id              INT             AUTO_INCREMENT PRIMARY KEY,
+    qr_code_id      INT             NOT NULL,
+    ip_address      VARCHAR(45)     NULL,
+    device_type     VARCHAR(20)     NOT NULL DEFAULT 'unkown',
+    user_agent      TEXT            NULL,
+    scanned_at      TIMESTAMP       DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_scan_qr_code FOREIGN KEY (qr_code_id) REFERENCES qr_codes(id) ON DELETE CASCADE,
+
+    INDEX idx_scan_qr_code_id (qr_code_id),
+    INDEX idx_scan_scanned_at (scanned_at)
+) 
