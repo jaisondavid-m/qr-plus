@@ -5,12 +5,14 @@ import {
     Loader2
 } from "lucide-react"
 import API from "../api/axios.js"
+import useAuthStore from "../store/authStore.js"
 
 import AuthLayout from "../components/auth/AuthLayout.jsx"
 
 function Login() {
 
     const navigate = useNavigate()
+    const login = useAuthStore(state => state.login)
 
     const [userID, setUserID] = useState("")
     const [password, setPassword] = useState("")
@@ -38,10 +40,12 @@ function Login() {
             })
             const token = res?.data?.token
 
-            if (token) {
-                localStorage.setItem("token", token)
+            if (!token) {
+                // localStorage.setItem("token", token)
+                throw new Error("Invalid server response")
             }
 
+            login(res.data.token)
             navigate("/home")
 
         } catch (err) {

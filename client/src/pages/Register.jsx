@@ -6,12 +6,14 @@ import {
 } from "lucide-react"
 import API from "../api/axios.js"
 import PasswordStrength from "../utils/PasswordStrength.js"
+import useAuthStore from "../store/authStore.js"
 
 import AuthLayout from "../components/auth/AuthLayout.jsx"
 
 function Register() {
 
     const navigate = useNavigate()
+    const login = useAuthStore(state => state.login)
 
     const [userID, setUserID] = useState("")
     const [password, setPassword] = useState("")
@@ -22,7 +24,7 @@ function Register() {
 
     const strength = useMemo(() =>
         PasswordStrength(password)
-    ,[password])
+        , [password])
 
     const mismatch = confirm.length > 0 && confirm !== password
 
@@ -53,12 +55,16 @@ function Register() {
                 password,
             })
             const token = res?.data?.token
-            if (token) {
-                localStorage.setItem("token", token)
+            if (!token) {
+                // localStorage.setItem("token", token)
+                throw new Error("Invalid server response")
             }
+
+            login(token)
             navigate("/home")
+
         } catch (err) {
-            const message = 
+            const message =
                 err?.response?.data?.message ||
                 "Couldn't create your account. Try a different user ID."
             setError(message)
@@ -183,11 +189,10 @@ function Register() {
                         onChange={(e) => setConfirm(e.target.value)}
                         placeholder="Repeat you password"
                         className={`mt-2 w-full rounded-lg bg-white border px-4 py-3 text-[#14161a] placeholder:text-[#b7b8b2] outline-none focus:ring-2 transition
-                                ${
-                                    mismatch
-                                        ? "border-[#ff4d4d] focus:border-[#ff4d4d] focus:ring-[#ff4d4d]/20"
-                                        : "border-[#e4e4de] focus:border-[#2b59ff] focus:ring-[#2b59ff]/20"
-                                }
+                                ${mismatch
+                                ? "border-[#ff4d4d] focus:border-[#ff4d4d] focus:ring-[#ff4d4d]/20"
+                                : "border-[#e4e4de] focus:border-[#2b59ff] focus:ring-[#2b59ff]/20"
+                            }
                             `}
                     />
                     {mismatch && (
