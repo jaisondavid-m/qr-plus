@@ -8,12 +8,12 @@ import {
 function ResultPart({result, handleCopy, handleReset, copied }) {
 
     return (
-        <div className="space-y-5" >
-            <div className="rounded-xl border border-[#e4e4de] bg-[#fafaf6] flex flex-col items-center gap-4 px-6 py-8" >
+        <div className="space-y-4" >
+            <div className="rounded-xl border border-[#e4e4de] bg-[#fafaf6] flex flex-col items-center gap-4 px-5 py-5" >
                 <img
                     src={result.imageUrl}
                     alt={`QR code for ${result.content}`}
-                    className="w-44 h-44 rounded-lg bg-white border border-[#E4E4DE] p-3"
+                    className="w-32 h-32 rounded-lg bg-white border border-[#E4E4DE] p-3"
                 />
                 <span className="font-mono text-xs tracking-widest text-[#6b6f76]" >
                     CODE&nbsp;
@@ -24,7 +24,7 @@ function ResultPart({result, handleCopy, handleReset, copied }) {
                 <label className="font-mono text-[11px] tracking-widest text-[#6b6f76]" >
                     ENCODED CONTENT
                 </label>
-                <div className="mt-2 flex items-start gap-2 rounded-xl border border-[#e4e4de] bg-white px-4 py-3" >
+                <div className="mt-2 flex items-start gap-2 rounded-xl border border-[#e4e4de] bg-white px-4 py-2.5" >
                     <span className="text-sm text-[#14161a] break-all flex-1" >
                         {result.content}
                     </span>

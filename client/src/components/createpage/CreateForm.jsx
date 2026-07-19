@@ -7,8 +7,8 @@ import {
 function CreateForm({ handleSubmit, content, setContent, loading,  }) {
 
     return (
-        <form onSubmit={handleSubmit} noValidate className="space-y-5" >
-            <div className="rounded-xl border border-[#e4e4de] bg-[#fafaf6] px-5 py-5 flex items-center gap-5" >
+        <form onSubmit={handleSubmit} noValidate className="space-y-4" >
+            <div className="rounded-xl border border-[#e4e4de] bg-[#fafaf6] px-4 py-4 flex items-center gap-5" >
                 <QrPreview seed={content} />
                 <div className="flex flex-col gap-1 min-w-0" >
                     <span className="font-mono text-[11px] tracking-widest text-[#6b6f76]" >
@@ -33,7 +33,7 @@ function CreateForm({ handleSubmit, content, setContent, loading,  }) {
                     id="content"
                     name="content"
                     autoFocus
-                    rows={3}
+                    rows={2}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="https://macondo.hackclub.com or any text"
@@ -46,7 +46,7 @@ function CreateForm({ handleSubmit, content, setContent, loading,  }) {
                 type="submit"
                 disabled={loading}
                 className="w-full flex items-center justify-center justify-center gap-2 rounded-lg bg-[#2b59ff] hover:bg-[#1f45d6]
-                disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium py-3 transition focus:outline-none
+                disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium py-2.5 transition focus:outline-none
                 focus:ring-2 focus:ring-[#2b59ff]/40 focus:ring-offset-2 focus:ring-offset-[#fafaf6]"
             >
                 {

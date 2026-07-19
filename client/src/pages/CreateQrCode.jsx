@@ -69,15 +69,15 @@ function CreateQrCode() {
     }
 
     return (
-        <div className="min-h-screen w-full font-body flex items-center justify-center px-6 py-12 bg-[#fafaf6]" >
-            <div className="w-full max-w-md rounded-3xl bg-white shadow-xl border border-slate-200 p-10" >
+        <div className="min-h-screen w-full font-body flex items-center justify-center px-6 py-6 bg-[#fafaf6]" >
+            <div className="w-full max-w-md rounded-2xl bg-white shadow-xl border border-slate-200 p-10" >
                 <div className="flex items-center gap-2 text-[#2b59ff]" >
                     <QrCode className="w-5 h-5" strokeWidth={1.75} />
                     <span className="font-mono text-xs tracking-[0.25em]" >
                         GENERATE
                     </span>
                 </div>
-                <h2 className="font-display text-2xl font-semibold text-[#14161a] mt-3" >
+                <h2 className="font-body text-sm font-semibold text-[#14161a] mt-3" >
                     Create a QR code
                 </h2>
                 <p className="font-body text-sm text-[#6b6f76] mt-2 mb-8" >

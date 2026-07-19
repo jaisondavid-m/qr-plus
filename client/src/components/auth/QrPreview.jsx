@@ -9,7 +9,7 @@ function hashChar(str, i) {
 function QrPreview({ seed }) {
     const cells = Array.from({ length: 64 }, (_, i) => hashChar(seed, i) )
     return (
-        <div className="grid grid-cols-8 gap-[3px] w-28 h-28 shrink-0" >
+        <div className="grid grid-cols-8 gap-[3px] w-20 h-20 shrink-0" >
             {
                 cells.map((on,i) => (
                     <div 
