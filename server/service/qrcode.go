@@ -1,15 +1,15 @@
 package service
 
 import (
-
 	"errors"
+	"fmt"
 
+	"server/config"
 	"server/models"
 	"server/repository"
 	"server/utils"
 
 	"github.com/go-sql-driver/mysql"
-
 )
 
 var ErrQRCodeNotFound = errors.New("qr code not found")
@@ -70,7 +70,7 @@ func isDuplicateEntryError(err error) bool {
 
 }
 
-func GetQRCodeImage(code, ipAddress, userAgent string) ([]byte, error) {
+func GetQRCodeImage(code string) ([]byte, error) {
 
 	qr, err := repository.GetQRCodeByCode(code)
 
@@ -82,14 +82,34 @@ func GetQRCodeImage(code, ipAddress, userAgent string) ([]byte, error) {
 		return nil, ErrQRCodeNotFound
 	}
 
-	png, err := utils.GenerateQRCodePNG(qr.Content, 256)
+	redirectURL := fmt.Sprintf("%s/r/%s", config.AppBaseURL, qr.Code)
+
+	png, err := utils.GenerateQRCodePNG(redirectURL, 256)
 
 	if err != nil {
 		return nil, err
 	}
 
-	go recordScan(qr.ID, ipAddress, userAgent)
+	// go recordScan(qr.ID, ipAddress, userAgent)
 
 	return png, nil
+
+}
+
+func ResolveAndRecordScan(code, ipAddress, userAgent string) (string, error) {
+
+	qr, err := repository.GetQRCodeByCode(code)
+
+	if err != nil {
+		return "", err
+	}
+
+	if qr == nil {
+		return "", ErrQRCodeNotFound
+	}
+
+	go recordScan(qr.ID, ipAddress, userAgent)
+
+	return qr.Content, nil
 
 }

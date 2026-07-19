@@ -14,6 +14,7 @@ import (
 )
 
 var DB *sql.DB
+var AppBaseURL string
 
 func ConnectDB() {
 
@@ -24,6 +25,8 @@ func ConnectDB() {
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	name := os.Getenv("DB_NAME")
+
+	AppBaseURL = os.Getenv("APP_BASE_URL")
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
 		user, pass, host, port, name)	

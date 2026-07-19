@@ -64,7 +64,7 @@ func GetQRCodeImage(c *gin.Context) {
 
 	code := c.Param("code")
 
-	png, err := service.GetQRCodeImage(code, c.ClientIP(), c.Request.UserAgent())
+	png, err := service.GetQRCodeImage(code)
 
 	if err != nil {
 
@@ -85,6 +85,31 @@ func GetQRCodeImage(c *gin.Context) {
 	}
 
 	c.Data(http.StatusOK, "image/png", png)
+
+}
+
+func RedirectQRCode(c *gin.Context) {
+
+	code := c.Param("code")
+
+	content, err := service.ResolveAndRecordScan(code, c.ClientIP(), c.Request.UserAgent())
+
+	if err != nil {
+		if errors.Is(err, service.ErrQRCodeNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{
+				"status": "error",
+				"message": "QR code not found",
+			})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": "error",
+			"message": "Something went wrong",
+		})
+		return
+	}
+
+	c.Redirect(http.StatusFound, content)
 
 }
 
