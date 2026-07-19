@@ -8,7 +8,7 @@ function CreateForm({ handleSubmit, content, setContent, loading,  }) {
 
     return (
         <form onSubmit={handleSubmit} noValidate className="space-y-4" >
-            <div className="rounded-xl border border-[#e4e4de] bg-[#fafaf6] px-4 py-4 flex items-center gap-5" >
+            <div className="hidden sm:flex rounded-xl border border-[#e4e4de] bg-[#fafaf6] px-4 py-4 flex items-center gap-5" >
                 <QrPreview seed={content} />
                 <div className="flex flex-col gap-1 min-w-0" >
                     <span className="font-mono text-[11px] tracking-widest text-[#6b6f76]" >
@@ -17,7 +17,7 @@ function CreateForm({ handleSubmit, content, setContent, loading,  }) {
                     <div className="font-mono text-sm text-[#14161a] truncate" >
                         encode: <span className="text-[#2b59ff]" >{content.trim() || "-"}</span>
                     </div>
-                    <span className="text-[10px] text-[#6b6f76] tracking-widest" >
+                    <span className="sm:hidden text-[10px] font-mono text-[#6b6f76] tracking-widest" >
                         NOT REAL UNTIL GENERATED
                     </span>
                 </div>
@@ -37,7 +37,7 @@ function CreateForm({ handleSubmit, content, setContent, loading,  }) {
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="https://macondo.hackclub.com or any text"
-                    className="mt-2 w-full rounded-xl bg-white border border-[#e4e4de] px-4 py-3 text-[#14161a]
+                    className="mt-1 sm:mt-2 w-full rounded-xl bg-white border border-[#e4e4de] px-3 py-2.5 sm:px-4 sm:py-3 text-[#14161a]
                     placeholder:text-[#b7b8b2] outline-none focus:border-[#2b59ff] focus:ring-2 focus:ring-[#2b59ff]/20
                     transition resize-none"
                 />
