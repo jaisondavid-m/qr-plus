@@ -9,6 +9,8 @@ import Test from "../pages/Test.jsx"
 import PublicRoute from "./PublicRoute.jsx"
 import ProtectedRoute from "./ProtectedRoute.jsx"
 
+import AppLayout from "../components/layout/AppLayout.jsx"
+
 export default function Router() {
     return (
         <Routes>
@@ -21,8 +23,10 @@ export default function Router() {
             </Route>
 
             <Route element={<ProtectedRoute />} >
-                <Route path="/home" element={<Home />} />
-                <Route path="/create" element={<CreateQrCode />} />
+                <Route element={<AppLayout/>} >
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/create" element={<CreateQrCode />} />
+                </Route>
             </Route>
 
             <Route path="/test" element={<Test />} />
