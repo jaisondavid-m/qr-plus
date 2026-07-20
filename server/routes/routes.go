@@ -23,8 +23,8 @@ func SetUpRoutes(router *gin.Engine) {
 	qr := v1.Group("/qrcodes")
 	qr.Use(middleware.AuthMiddleware())
 	{
-		qr.POST("/", handlers.CreateQRCode)
-		qr.GET("/", handlers.ListQRCodes)
+		qr.POST("", handlers.CreateQRCode)
+		qr.GET("", handlers.ListQRCodes)
 		qr.GET("/:id", handlers.GetQRCodeDetails)
 	}
 
