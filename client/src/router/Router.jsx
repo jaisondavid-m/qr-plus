@@ -4,7 +4,9 @@ import Home from "../pages/Home.jsx"
 import Register from "../pages/Register.jsx"
 import Login from "../pages/Login.jsx"
 import CreateQrCode from "../pages/CreateQrCode.jsx"
+import Analytics from "../pages/Analytics.jsx"
 import Test from "../pages/Test.jsx"
+import QrCodeDetails from "../pages/QrCodeDetails.jsx"
 
 import PublicRoute from "./PublicRoute.jsx"
 import ProtectedRoute from "./ProtectedRoute.jsx"
@@ -26,6 +28,8 @@ export default function Router() {
                 <Route element={<AppLayout/>} >
                     <Route path="/home" element={<Home />} />
                     <Route path="/create" element={<CreateQrCode />} />
+                    <Route path="/analytics" element={<Analytics/>} />
+                    <Route path="/analytics/:id" element={<QrCodeDetails/>} />
                 </Route>
             </Route>
 
