@@ -21,7 +21,7 @@ services:
   
   backend:
     build:
-      context: ./backend
+      context: ./server
       dockerfile: Dockerfile
     container_name: qr_backend
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
 
   web:
     build:
-      context: ./frontend
+      context: ./client
       dockerfile: Dockerfile
       args:
         VITE_API_BACKEND_URL: /api/v1
