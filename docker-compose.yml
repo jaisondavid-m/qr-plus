@@ -50,9 +50,28 @@ services:
     container_name: qr_web
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "80"
     depends_on:
       - backend
+    networks:
+      - qr_net
+
+  caddy:
+    image: caddy-2
+    container_name: qr_caddy
+    restart: unless-stopped
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - ./Caddyfile:etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+    depends_on:
+      - web
     networks:
       - qr_net
 
@@ -63,3 +82,5 @@ networks:
 volumes:
   db_data:
   qr_storage:
+  caddy_data:
+  caddy_volumes:

@@ -1,0 +1,7 @@
+qrplus.bitsathy.in {
+
+	encode gzip
+
+	reverse_proxy web:80
+
+}
