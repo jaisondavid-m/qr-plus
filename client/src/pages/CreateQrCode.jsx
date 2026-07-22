@@ -33,7 +33,7 @@ function CreateQrCode() {
         setLoading(true)
 
         try {
-            const res = await API.post("/qrcodes/", {
+            const res = await API.post("/qrcodes", {
                 content: content.trim(),
             })
             const data = res?.data?.data

@@ -1,0 +1,65 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: qr_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - qr_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: qr_backend
+    restart: unless-stopped
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME}
+      CLIENT_URLS: ${CLIENT_URLS}
+      APP_BASE_URL: ${APP_BASE_URL}
+    depends_on:
+      db:
+        conditino: service_healthy
+    volumes:
+      - qr_storage:/app/storage
+    networks:
+      - qr_net
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BACKEND_URL: /api/v1
+    container_name: qr_web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - qr_net
+
+networks:
+  qr_net:
+    driver: bridge
+
+volumes:
+  db_data:
+  qr_storage:

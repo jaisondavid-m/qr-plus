@@ -9,7 +9,7 @@ import ResolveImageUrl from "../utils/resolveImageUrl.js"
 import HistoryTable from "../components/analytics/HistoryTable.jsx"
 
 const DEVICE_ICONS = {
-    monile: Smartphone,
+    mobile: Smartphone,
     tablet: Tablet,
     desktop: Monitor,
 }
