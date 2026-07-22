@@ -6,6 +6,7 @@ import {
 } from "lucide-react"
 import API from "../api/axios.js"
 import ResolveImageUrl from "../utils/resolveImageUrl.js"
+import HistoryTable from "../components/analytics/HistoryTable.jsx"
 
 const DEVICE_ICONS = {
     monile: Smartphone,
@@ -33,13 +34,13 @@ function QrCodeDetails() {
             } finally {
                 if (!cancelled) setLoading(false)
             }
-            
-            load()
-            return () => { cancelled = false }
 
         }
 
-    },[id])
+        load()
+        return () => { cancelled = false }
+
+    }, [id])
 
     const deviceBreakdown = useMemo(() => {
         if (!detail?.scans) return []
@@ -48,10 +49,10 @@ function QrCodeDetails() {
             const key = s.device_type || "unknown"
             counts[key] = (counts[key] || 0) + 1
         })
-        return Object.entries(counts).sort((a,b) => b[1] - a[1])
-    },[detail])
+        return Object.entries(counts).sort((a, b) => b[1] - a[1])
+    }, [detail])
 
-    if (!loading) {
+    if (loading) {
         return (
             <div className="flex items-center justify-center gap-2 py-24 text-[#6b6f76]" >
                 <Loader2 className="w-4 h-4 animate-spin" /> Loading...
@@ -75,7 +76,7 @@ function QrCodeDetails() {
             <Link
                 to="/analytics"
                 className="inline-flex items-center gap-1.5 text-sm text-[#6b6f76] hover:text-[#14161a] mb-6"
-            >   
+            >
                 <ArrowLeft className="w-4 h-4" strokeWidth={1.75} /> Back to analytics
             </Link>
 
@@ -119,10 +120,49 @@ function QrCodeDetails() {
                         DEVICE BREAKDOWN
                     </span>
                     <div className="mt-3 space-y-2" >
-                        {deviceBreak}
+                        {deviceBreakdown.length === 0 ? (
+                            <span className="text-sm text-[#6b6f76]" >
+                                No scans yet
+                            </span>
+                        ) : (
+                            deviceBreakdown.map(([device, count]) => {
+                                const Icon = DEVICE_ICONS[device] || Smartphone
+                                return (
+                                    <div
+                                        key={device}
+                                        className="flex items-center justify-between text-sm"
+                                    >
+                                        <span className="flex items-center gap-1.5 text-[#14161a] capitalize" >
+                                            <Icon claassName="w-3.5 h-3.5 text-[#6b6f76]" strokeWidth={1.75} />
+                                        </span>
+                                        <span className="text-[#6b6f76]" >
+                                            {count}
+                                        </span>
+                                    </div>
+                                )
+                            })
+                        )}
                     </div>
                 </div>
+            </div>
 
+            <div className="rounded-2xl bg-white border border-[#e4e4de] overflow-hidden" >
+                <div className="px-6 py-5 border-b border-[#e4e4de]" >
+                    <h2 className="font-display text-lg font-semibold text-[#14161a]" >
+                        Scan History
+                    </h2>
+                </div>
+                {
+                    detail.scans.length === 0 ? (
+                        <div className="px-6 py-12 text-center text-sm text-[#6b6f76]" >
+                            No scans recorded yet.
+                        </div>
+                    ) : (
+                        <HistoryTable
+                            detail={detail}
+                        />
+                    )
+                }
             </div>
 
         </div>
