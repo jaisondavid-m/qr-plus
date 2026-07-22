@@ -83,4 +83,4 @@ volumes:
   db_data:
   qr_storage:
   caddy_data:
-  caddy_volumes:
+  caddy_config:
